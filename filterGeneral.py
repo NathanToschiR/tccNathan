@@ -4,8 +4,6 @@ import matplotlib.pyplot as plt
 
 print("Executing")
 
-#dc = pd.read_excel("testeDP.xlsx")
-#dc = pd.read_excel('notas_alunos_graduacao_ufjf_2019_2022.xlsx')
 dc = pd.read_excel("result_filtrados_soExatas.xlsx")
 
 dp_list = dc.DISCIPLINA.values.tolist()
@@ -137,8 +135,11 @@ for listActual in listNod:
                 else:
                     zeroPandemia += 1
 
-    mediaPrePandemia = media(somPrePandemia,countPrePandemia)
-    mediaPandemia = media(somPandemia,countPandemia)
+    countNotZeroPrePandemia = len(notesPrePandemia)
+    countNotZeroPandemia = len(notesPandemia)
+
+    mediaPrePandemia = media(somPrePandemia,countNotZeroPrePandemia)
+    mediaPandemia = media(somPandemia,countNotZeroPandemia)
     medianaPrePandemia = mediana(notesPrePandemia)
     medianaPandemia = mediana(notesPandemia)
     desvioPadraoPrePandemia = desvio_padrao(notesPandemia)
@@ -150,7 +151,7 @@ for listActual in listNod:
     reprovadosNotaPandemia = porcentagem(noPandemia,countPandemia)
     reprovadosFreqPandemia = porcentagem(zeroPandemia,countPandemia)
 
-    listDep.append(list)
+    listDep.append(listActual)
 
     listQtPrePandemia.append(countPrePandemia)
     listMdPrePandemia.append(mediaPrePandemia)
@@ -173,20 +174,22 @@ for listActual in listNod:
     plt.boxplot(notesPrePandemia) 
     nome_pasta = "boxplotsDep" 
     #nome_pasta = "boxplotsMaterias"
-    nome_arquivo = nome_pasta + "/boxplot_{}.png".format(list + "_notesPrePandemia") 
+    nome_arquivo = nome_pasta + "/boxplot_{}.png".format(listActual + "_notesPrePandemia") 
 
     plt.savefig(nome_arquivo) 
-    print("Gráfico salvo como: ", nome_arquivo) 
+    print("Gráfico salvo como: ", nome_arquivo)
+    plt.close() 
 
     plt.figure() 
     plt.boxplot(notesPandemia)
-    nome_arquivo = nome_pasta + "/boxplot_{}.png".format(list + "_notesPandemia")
+    nome_arquivo = nome_pasta + "/boxplot_{}.png".format(listActual + "_notesPandemia")
     plt.savefig(nome_arquivo)
     print("Gráfico salvo como: ", nome_arquivo)
+    plt.close()
 
 tg = pd.DataFrame.from_dict({
     #'Disciplina': listDep,
-    'Departamnto': listDep,
+    'Departamento': listDep,
     'Pre Pandemia Quant': listQtPrePandemia, 
     'Pre Pandemia Media': listMdPrePandemia, 
     'Pre Pandemia Mediana': listMdnPrePandemia, 
@@ -203,6 +206,7 @@ tg = pd.DataFrame.from_dict({
     'Pandemia Rep por Infreq': listRepFreqPandemia
 })
 
-tg.to_excel('result_boxplot_departamentos2.xlsx', header=True, index=False)
+tg.to_excel('result_boxplot_departamentos.xlsx', header=True, index=False)
+#tg.to_excel('result_boxplot_disciplinas.xlsx', header=True, index=False)
 
 print("Done!")
