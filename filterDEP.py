@@ -7,7 +7,7 @@ primeiros_caracteres = ['DCC', 'EST', 'FIS', 'MAT', 'QUI']
 
 # Leitura da planilha original
 # df_original = pd.read_excel("testeDP.xlsx")
-df_original = pd.read_excel('notas_alunos_graduacao_ufjf_2019_2022.xlsx')
+df_original = pd.read_excel('notas_All_Filtradas.xlsx')
 
 # Filtragem das linhas com base na coluna "DISCIPLINAS"
 df_filtrado = df_original[df_original['DISCIPLINA'].str[:3].isin(primeiros_caracteres)]
