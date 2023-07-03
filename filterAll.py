@@ -5,21 +5,21 @@ import re
 
 print("Executing")
 
-dc = pd.read_excel("notas_All_Filtradas.xlsx")
+dc = pd.read_excel("result_filtrados_soExatas.xlsx")
 
-#dp_list = dc.DISCIPLINA.values.tolist()
-nm_list = dc.NOME.values.tolist()
+dp_list = dc.DISCIPLINA.values.tolist()
+#nm_list = dc.NOME.values.tolist()
 yr_list = dc.ANO.values.tolist()
 sm_list = dc.SEMESTRE.values.tolist()
 nb_list = dc.NOTA.values.tolist()
 st_list = dc.SITUACAO.values.tolist()
 
-#for y in range(len(dp_list)):
-#    dp_list[y] = dp_list[y][0:3]
+for y in range(len(dp_list)):
+    dp_list[y] = dp_list[y][0:3]
 
 
-#listNod = list(dict.fromkeys(dp_list))
-listNod = list(dict.fromkeys(nm_list))
+listNod = list(dict.fromkeys(dp_list))
+#listNod = list(dict.fromkeys(nm_list))
 
 for y in range(len(nb_list)):
     if(nb_list[y] == 'APR'):
@@ -123,8 +123,8 @@ for listActual in listNod:
     notesPrePandemia = []
     notesPandemia = []
 
-    list = nm_list
-    #list = dp_list
+    #list = nm_list
+    list = dp_list
 
     for x in range(len(list)):
         if list[x] == listActual:
@@ -198,9 +198,10 @@ for listActual in listNod:
 
     plt.figure()
     plt.boxplot(notesPrePandemia) 
-    #nome_pasta = "boxplotsDep" 
-    nome_pasta = "boxplotsMaterias"
+    nome_pasta = "boxplotsExatasDep" 
+    #nome_pasta = "boxplotsExatasMaterias"
     nomeLista = re.sub(r'[\\/*?:"<>|]', '_', listActual)
+    nomeLista = re.sub('\t', '_', nomeLista)
     nome_arquivo = nome_pasta + "/boxplot_{}.png".format(nomeLista + "_notesPrePandemia") 
     plt.savefig(nome_arquivo) 
     print("Gráfico salvo como: ", nome_arquivo)
@@ -209,6 +210,7 @@ for listActual in listNod:
     plt.figure() 
     plt.boxplot(notesPandemia)
     nomeLista = re.sub(r'[\\/*?:"<>|]', '_', listActual)
+    nomeLista = re.sub('\t', '_', nomeLista)
     nome_arquivo = nome_pasta + "/boxplot_{}.png".format(nomeLista + "_notesPandemia")
     plt.savefig(nome_arquivo)
     print("Gráfico salvo como: ", nome_arquivo)
@@ -249,9 +251,9 @@ listRepFreqPandemia.append(reprovadosTotalFreqPandemia)
 
 plt.figure()
 plt.boxplot(notesTotalPrePandemia) 
-#nome_pasta = "boxplotsAllDep" 
-nome_pasta = "boxplotsAllMaterias"
-nome_arquivo = nome_pasta + "/boxplot_{}.png".format("Total_notesPrePandemia") 
+nome_pasta = "boxplotTudoDep" 
+#nome_pasta = "boxplotsExatasMaterias"
+nome_arquivo = nome_pasta + "/boxplot_{}.png".format("Exatas_notesPrePandemia") 
 
 plt.savefig(nome_arquivo) 
 print("Gráfico salvo como: ", nome_arquivo)
@@ -259,14 +261,14 @@ plt.close()
 
 plt.figure() 
 plt.boxplot(notesTotalPandemia)
-nome_arquivo = nome_pasta + "/boxplot_{}.png".format("Total_notesPandemia")
+nome_arquivo = nome_pasta + "/boxplot_{}.png".format("Exatas_notesPandemia")
 plt.savefig(nome_arquivo)
 print("Gráfico salvo como: ", nome_arquivo)
 plt.close()
 
 tg = pd.DataFrame.from_dict({
-    'Disciplina': listDep,
-    #'Departamento': listDep,
+    #'Disciplina': listDep,
+    'Departamento': listDep,
     'Pre Pandemia Quant': listQtPrePandemia, 
     'Pre Pandemia Media': listMdPrePandemia, 
     'Pre Pandemia Mediana': listMdnPrePandemia, 
@@ -283,7 +285,7 @@ tg = pd.DataFrame.from_dict({
     'Pandemia Rep por Infreq': listRepFreqPandemia
 })
 
-#tg.to_excel('resultAll_boxplot_departamentos.xlsx', header=True, index=False)
-tg.to_excel('resultAll_boxplot_disciplinas.xlsx', header=True, index=False)
+tg.to_excel('result_exatas_boxplot_departamentos.xlsx', header=True, index=False)
+#tg.to_excel('result_exatas_boxplot_disciplinas.xlsx', header=True, index=False)
 
 print("Done!")
